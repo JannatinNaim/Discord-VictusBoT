@@ -1,6 +1,7 @@
 require("dotenv").config();
 require("colors");
 
+const fs = require("fs");
 const path = require("path");
 
 const { oneLine } = require("common-tags");
@@ -49,6 +50,24 @@ const BOT_TOKEN = process.env.BOT_TOKEN;
         (${discordClient.user.id})
       `.green.bold
         );
+
+        (() => {
+          const functionsDirectory = "src/functions";
+
+          const functionFiles = fs
+            .readdirSync(path.join(__dirname, functionsDirectory))
+            .filter((file) => file.endsWith(".js"));
+
+          for (const file of functionFiles) {
+            const _function = require(path.join(
+              __dirname,
+              functionsDirectory,
+              file
+            ));
+
+            _function.execute(discordClient);
+          }
+        })();
       })
 
       .on("error", (err) => {
