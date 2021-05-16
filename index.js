@@ -101,7 +101,11 @@ const BOT_TOKEN = process.env.BOT_TOKEN;
         unknownCommand: false,
       })
 
-      .registerGroups([["misc", "MISC Commands"]])
+      .registerGroups([
+        ["misc", "MISC Commands"],
+        ["api-based", "API Based"],
+        ["admin", "Admin"],
+      ])
 
       .registerCommandsIn(path.join(__dirname, "src", "commands"));
   } catch (err) {

@@ -1,8 +1,6 @@
-require("module-alias/register");
-
 require("colors");
 
-const clientSettingsSchema = require("@discordClientRoot/src/MongoDB/Schema/ClientSettings.js");
+const clientSettingsSchema = require("../../mongodb/schema/clientSettings.js");
 
 const Commando = require("discord.js-commando");
 
@@ -54,10 +52,11 @@ module.exports = class BotStatusCommand extends Commando.Command {
     this.client.user.setPresence(newStatus);
     console.log(`Updated Bot Status!`.blue);
 
+    const CLIENT_SETTINGS_DOCUMENT_ID = process.env.CLIENT_SETTINGS_DOCUMENT_ID;
     try {
       await clientSettingsSchema
         .findOneAndUpdate(
-          { _id: "clientSettings" },
+          { _id: CLIENT_SETTINGS_DOCUMENT_ID },
           {
             $set: {
               presence: newStatus,
